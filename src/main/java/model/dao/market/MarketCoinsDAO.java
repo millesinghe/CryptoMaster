@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import model.dao.app.CoinDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class MarketCoinsDAO {
     private List<MarketCoinDAO> coin;
 
     public MarketCoinsDAO() {
+        this.coin=new ArrayList<MarketCoinDAO>();
     }
 
     public List<MarketCoinDAO> getCoin() {
