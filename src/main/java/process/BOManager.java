@@ -7,23 +7,58 @@ import model.dao.market.MarketCoinsDAO;
 import operation.FileHandler;
 import util.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Milinda
  */
 public class BOManager {
 
+    private BOHelper boHelper;
+
+    public BOManager(){
+        boHelper = new BOHelper();
+    }
+
     public void addNewCoin(String coinId, String name, String date, double amount, double price){
-        CoinsDAO coins = this.getBuyList();
+        CoinsDAO coins = boHelper.getBuyList();
 
-        CoinDAO c = new CoinDAO(coinId,name);
-        TransactionDAO tx1 = new TransactionDAO(date,amount,price);
-        c.setTx(null);
+        //filter CoinSet from the List
+        List<CoinDAO> otherCoins = new ArrayList<CoinDAO>();
 
-        FileHandler.writeXMLFile(Constants.XML_BUY_PORTFOLIO,coins);
+        for(CoinDAO coin: coins.getCoin()){
+            if (coin.getId().equalsIgnoreCase(coinId)){
+                TransactionDAO tx1 = new TransactionDAO(date,amount,price);
+                coin.setNewTx(tx1);
+                otherCoins.add(coin);
+            }else {
+                otherCoins.add(coin);
+            }
+        }
+
+        coins.setCoin(otherCoins);
+        boHelper.updateXML("BUY",coins);
     }
 
-    private CoinsDAO getBuyList() {
-        CoinsDAO coins = (CoinsDAO) FileHandler.readXMLFile(Constants.XML_BUY_PORTFOLIO, CoinsDAO.class);
-        return coins;
+    public void removeCoin(String coinId, String name, String date, double amount, double price){
+        CoinsDAO coins = new BOHelper().getBuyList();
+
+        //filter CoinSet from the List
+        List<CoinDAO> otherCoins = new ArrayList<CoinDAO>();
+
+        for(CoinDAO coin: coins.getCoin()){
+            if (coin.getId().equalsIgnoreCase(coinId)){
+                TransactionDAO tx1 = new TransactionDAO(date,amount,price);
+                coin.setNewTx(tx1);
+                otherCoins.add(coin);
+            }else {
+                otherCoins.add(coin);
+            }
+        }
+
+        coins.setCoin(otherCoins);
+        boHelper.updateXML("SELL",coins);
     }
+
 }

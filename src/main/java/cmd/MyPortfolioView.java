@@ -4,10 +4,8 @@ import model.dao.app.CoinDAO;
 import model.dao.app.CoinsDAO;
 import model.dao.app.TransactionDAO;
 import operation.ChoiceRequestor;
-import operation.FileHandler;
 import process.BOHelper;
 import process.BOManager;
-import util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +39,6 @@ public class MyPortfolioView implements CmdView{
     }
 
     private void option1(){
-
         System.out.println(">> Add the bought coin details");
         String id = ChoiceRequestor.requestAnswer("Coin Id \t - ",false);
         String name = new BOHelper().getCoinName(id);
@@ -56,8 +53,30 @@ public class MyPortfolioView implements CmdView{
         String date = ChoiceRequestor.requestAnswer("Bought Date \t - ",false);
 
         new BOManager().addNewCoin(id,name,date,amount,price);
+    }
+
+    private void option2(){
+        System.out.println(">> Add the Sold coin details");
+        String id = ChoiceRequestor.requestAnswer("Coin Id \t - ",false);
+        String name = new BOHelper().getCoinName(id);
+
+        if (name == null) {
+            System.err.println("Invalid detail");
+        }
+
+        System.out.println("Coin Name \t - "+ name);
+        double amount = ChoiceRequestor.requestDouble("Sold Amount \t - ",false);
+        double price = ChoiceRequestor.requestDouble("Sold Price \t - ",false);
+        String date = ChoiceRequestor.requestAnswer("Sold Date \t - ",false);
+
+        new BOManager().addNewCoin(id,name,date,amount,price);
+    }
+
+
+    private void option3(){
 
     }
+
 
     private CoinsDAO sampleCoin() {
         TransactionDAO tx1 = new TransactionDAO("21/01/21",10.00,100.00);
@@ -80,14 +99,4 @@ public class MyPortfolioView implements CmdView{
         return coinsdao;
     }
 
-
-    private void option2(){
-        CoinsDAO c = this.sampleCoin();
-        FileHandler.writeXMLFile(Constants.XML_SELL_PORTFOLIO,c);
-    }
-
-
-    private void option3(){
-
-    }
 }

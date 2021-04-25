@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
- * @author Yasara
+ * @author Milinda
  */
 public class FileHandler {
 

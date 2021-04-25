@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class CoinDAO{
     public CoinDAO(String id, String name){
         this.id = id;
         this.name = name;
+        this.tx = new ArrayList<TransactionDAO>();
     }
 
     public String getName() {
@@ -50,5 +52,9 @@ public class CoinDAO{
 
     public void setTx(List<TransactionDAO> tx) {
         this.tx = tx;
+    }
+
+    public void setNewTx(TransactionDAO newtx) {
+        this.tx.add(newtx);
     }
 }
