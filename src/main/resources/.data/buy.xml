@@ -1,0 +1,28 @@
+<coins>
+    <coin name="Bitcoin" id="btc">
+        <transactions>
+            <tx>
+                <amount>10.0</amount>
+                <dealPrice>100.0</dealPrice>
+                <date>21/01/21</date>
+                <meta>
+                    <fee>0.0</fee>
+                    <equalUSDT>0.0</equalUSDT>
+                </meta>
+            </tx>
+        </transactions>
+    </coin>
+    <coin name="Etherium" id="eth">
+        <transactions>
+            <tx>
+                <amount>20.0</amount>
+                <dealPrice>200.0</dealPrice>
+                <date>21/01/22</date>
+                <meta>
+                    <fee>0.01</fee>
+                    <equalUSDT>1.0</equalUSDT>
+                </meta>
+            </tx>
+        </transactions>
+    </coin>
+</coins>

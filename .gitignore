@@ -1,0 +1,13 @@
+### Maven ###
+target/
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+
+
+# IntelliJ
+out/
+.idea/
+CryptoScanner.iml
