@@ -3,8 +3,6 @@ package process;
 import model.dao.app.CoinDAO;
 import model.dao.app.CoinsDAO;
 import model.dao.app.TransactionDAO;
-import model.dao.market.MarketCoinsDAO;
-import operation.FileHandler;
 import util.Constants;
 
 import java.util.ArrayList;
@@ -21,44 +19,37 @@ public class BOManager {
         boHelper = new BOHelper();
     }
 
-    public void addNewCoin(String coinId, String name, String date, double amount, double price){
+    public void addNewCoin(String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
+        CoinsDAO coins = this.addCoinRecord(coinId, name, date, amount, price, fee, equalUSDT);
+        boHelper.updateXML(Constants.XML_BUY_PORTFOLIO,coins);
+    }
+
+    public void removeCoin(String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
+        CoinsDAO coins = this.addCoinRecord(coinId, name, date, amount, price, fee, equalUSDT);
+        boHelper.updateXML(Constants.XML_SELL_PORTFOLIO,coins);
+    }
+
+    private CoinsDAO addCoinRecord(String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
         CoinsDAO coins = boHelper.getBuyList();
 
         //filter CoinSet from the List
         List<CoinDAO> otherCoins = new ArrayList<CoinDAO>();
 
+        boolean isExistingCoin = false;
         for(CoinDAO coin: coins.getCoin()){
             if (coin.getId().equalsIgnoreCase(coinId)){
-                TransactionDAO tx1 = new TransactionDAO(date,amount,price);
+                TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT);
                 coin.setNewTx(tx1);
-                otherCoins.add(coin);
-            }else {
-                otherCoins.add(coin);
             }
+            otherCoins.add(coin);
         }
-
-        coins.setCoin(otherCoins);
-        boHelper.updateXML("BUY",coins);
-    }
-
-    public void removeCoin(String coinId, String name, String date, double amount, double price){
-        CoinsDAO coins = new BOHelper().getBuyList();
-
-        //filter CoinSet from the List
-        List<CoinDAO> otherCoins = new ArrayList<CoinDAO>();
-
-        for(CoinDAO coin: coins.getCoin()){
-            if (coin.getId().equalsIgnoreCase(coinId)){
-                TransactionDAO tx1 = new TransactionDAO(date,amount,price);
-                coin.setNewTx(tx1);
-                otherCoins.add(coin);
-            }else {
-                otherCoins.add(coin);
-            }
+        if(!isExistingCoin){
+            CoinDAO newCoin = new CoinDAO(coinId,name);
+            TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT);
+            newCoin.setNewTx(tx1);
+            otherCoins.add(newCoin);
         }
-
         coins.setCoin(otherCoins);
-        boHelper.updateXML("SELL",coins);
+        return coins;
     }
-
 }

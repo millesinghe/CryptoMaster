@@ -29,10 +29,6 @@ public class BOHelper {
     }
 
     public void updateXML(String updateFile, XmlAppDao pojo) {
-        if (updateFile.equals("BUY")){
-            FileHandler.writeXMLFile(Constants.XML_BUY_PORTFOLIO,pojo);
-        } else if (updateFile.equals("SELL")){
-            FileHandler.writeXMLFile(Constants.XML_SELL_PORTFOLIO,pojo);
-        }
+        FileHandler.writeXMLFile(updateFile,pojo);
     }
 }
