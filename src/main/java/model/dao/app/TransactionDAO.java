@@ -1,5 +1,7 @@
 package model.dao.app;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 /**
  * @author Milinda
  */
@@ -10,19 +12,24 @@ public class TransactionDAO {
     private String date;
     private MetacoinDAO meta;
 
-    public TransactionDAO() {}
+    @JacksonXmlProperty(isAttribute = true)
+    private boolean isBuy;
 
-    public TransactionDAO(String date, double amount, double dealPrice) {
+    public TransactionDAO(){}
+
+    public TransactionDAO(String date, double amount, double dealPrice, boolean isBuy) {
         this.date = date;
         this.amount = amount;
         this.dealPrice = dealPrice;
+        this.isBuy = isBuy;
         this.meta = new MetacoinDAO();;
     }
 
-    public TransactionDAO(String date, double amount, double dealPrice, double fee, double equalUSDT) {
+    public TransactionDAO(String date, double amount, double dealPrice, double fee, double equalUSDT, boolean isBuy) {
         this.date = date;
         this.amount = amount;
         this.dealPrice = dealPrice;
+        this.isBuy = isBuy;
         this.meta = new MetacoinDAO(fee,equalUSDT);
     }
 
@@ -56,5 +63,13 @@ public class TransactionDAO {
 
     public void setMeta(MetacoinDAO meta) {
         this.meta = meta;
+    }
+
+    public boolean isBuy() {
+        return isBuy;
+    }
+
+    public void setBuy(boolean buy) {
+        isBuy = buy;
     }
 }

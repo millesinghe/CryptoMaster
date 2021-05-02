@@ -11,7 +11,7 @@ import java.util.List;
  * @author Milinda
  */
 @JacksonXmlRootElement(localName = "coin")
-public class CoinDAO{
+public class CoinDAO implements XmlAppDao {
 
     @JacksonXmlProperty(isAttribute = true)
     private String name;

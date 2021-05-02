@@ -2,8 +2,6 @@ package cmd;
 
 import operation.ChoiceRequestor;
 
-import java.util.Scanner;
-
 /**
  * @author Milinda
  */
@@ -18,14 +16,16 @@ public class IntroView implements CmdView{
 
         String[] options = {"View My Coins","Update Coin Portfolio","Calculate Profit Margins","SETTING","QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a option to proceed",options);
+        CmdView view = null;
 
         switch (choice) {
             case 1 :
-                System.out.println("Unimplemented choice");
+                view = new CoinView();
+                view.display();
                 break;
             case 2 :
-                MyPortfolioView mpv = new MyPortfolioView();
-                mpv.display();
+                view = new MyMarketView();
+                view.display();
                 break;
             case 3 :
                 System.out.println("Unimplemented choice");

@@ -1,12 +1,10 @@
 package process;
 
 import model.dao.app.CoinDAO;
-import model.dao.app.CoinsDAO;
 import model.dao.app.TransactionDAO;
 import util.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Milinda
@@ -19,37 +17,27 @@ public class BOManager {
         boHelper = new BOHelper();
     }
 
-    public void addNewCoin(String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
-        CoinsDAO coins = this.addCoinRecord(coinId, name, date, amount, price, fee, equalUSDT);
-        boHelper.updateXML(Constants.XML_BUY_PORTFOLIO,coins);
+    public void addNewCoin(boolean isBuy, String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
+        String opsFile = new StringBuilder(Constants.XML_DEAL_RECORDS)
+                .append(coinId)
+                .append(Constants.XML_FILE).toString();
+        CoinDAO coin = this.addCoinRecord(isBuy, opsFile,coinId, name, date, amount, price, fee, equalUSDT);
+        boHelper.updateXML(opsFile,coin, coinId);
     }
 
-    public void removeCoin(String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
-        CoinsDAO coins = this.addCoinRecord(coinId, name, date, amount, price, fee, equalUSDT);
-        boHelper.updateXML(Constants.XML_SELL_PORTFOLIO,coins);
-    }
-
-    private CoinsDAO addCoinRecord(String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
-        CoinsDAO coins = boHelper.getBuyList();
-
-        //filter CoinSet from the List
-        List<CoinDAO> otherCoins = new ArrayList<CoinDAO>();
-
-        boolean isExistingCoin = false;
-        for(CoinDAO coin: coins.getCoin()){
-            if (coin.getId().equalsIgnoreCase(coinId)){
-                TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT);
-                coin.setNewTx(tx1);
-            }
-            otherCoins.add(coin);
+    private CoinDAO addCoinRecord(boolean isBuy, String opsFile, String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
+        CoinDAO coin = boHelper.getBuyList(opsFile,coinId);
+        if (coin != null){
+            TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT, isBuy);
+            coin.setNewTx(tx1);
+        }else{
+            TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT,isBuy);
+            coin = new CoinDAO(coinId,name);
+            ArrayList<TransactionDAO> txs = new ArrayList<TransactionDAO>();
+            txs.add(tx1);
+            coin.setTx(txs);
         }
-        if(!isExistingCoin){
-            CoinDAO newCoin = new CoinDAO(coinId,name);
-            TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT);
-            newCoin.setNewTx(tx1);
-            otherCoins.add(newCoin);
-        }
-        coins.setCoin(otherCoins);
-        return coins;
+
+        return coin;
     }
 }

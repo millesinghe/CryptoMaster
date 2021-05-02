@@ -1,11 +1,13 @@
 package process;
 
-import model.dao.app.CoinsDAO;
+import model.dao.app.CoinDAO;
 import model.dao.app.XmlAppDao;
 import model.dao.market.MarketCoinDAO;
 import model.dao.market.MarketCoinsDAO;
 import operation.FileHandler;
 import util.Constants;
+
+import java.io.File;
 
 /**
  * @author Milinda
@@ -24,11 +26,14 @@ public class BOHelper {
     }
 
 
-    public CoinsDAO getBuyList() {
-        return (CoinsDAO) FileHandler.readXMLFile(Constants.XML_BUY_PORTFOLIO, CoinsDAO.class);
+    public CoinDAO getBuyList(String readFile, String coinId) {
+        boolean file = new File(readFile).exists();
+        if (file == false)
+                return null;
+        return (CoinDAO) FileHandler.readXMLFile(readFile, CoinDAO.class);
     }
 
-    public void updateXML(String updateFile, XmlAppDao pojo) {
-        FileHandler.writeXMLFile(updateFile,pojo);
+    public void updateXML(String updateFile, XmlAppDao pojo, String coinname) {
+        FileHandler.writeCoibnDataToXML(updateFile,pojo, coinname);
     }
 }
