@@ -92,13 +92,13 @@ public class MyMarketView implements CmdView{
 
     private boolean option3(){
         boolean isBuy = true;
-        String id = "usdt";
-        String name = "Tether";
+        String id = "btc";
+        String name = "bitcoin";
         String date = "asdfgh";
-        double amount = 1;
-        double price = 125.1;
+        double amount = 100;
+        double price = 215.1;
         double fee = 0.1;
-        double equalUSDT =125.1;
+        double equalUSDT =215.1;
         new BOManager().addNewCoin(isBuy,id,name,date,amount,price,fee,equalUSDT);
         return true;
     }

@@ -5,9 +5,11 @@ import model.dao.app.XmlAppDao;
 import model.dao.market.MarketCoinDAO;
 import model.dao.market.MarketCoinsDAO;
 import operation.FileHandler;
+import operation.PropertiesLoader;
 import util.Constants;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 /**
  * @author Milinda
@@ -27,7 +29,15 @@ public class BOHelper {
 
 
     public CoinDAO getBuyList(String readFile, String coinId) {
-        boolean file = new File(readFile).exists();
+
+        boolean file = false;
+        try {
+            file = new PropertiesLoader().getFileFromResource(readFile).exists();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e){
+            System.err.println("New Coin detected");
+        }
         if (file == false)
                 return null;
         return (CoinDAO) FileHandler.readXMLFile(readFile, CoinDAO.class);
