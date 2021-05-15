@@ -19,8 +19,8 @@ public class FileHandler {
     public static Properties propSys;
 
     public static void loadProperties() {
-        propUser = FileHandler.loadPropertyFile("user.properties");
-        propSys = FileHandler.loadPropertyFile(".data/system.properties");
+        propUser = FileHandler.loadPropertyFile(Constants.PROP_USER);
+        propSys = FileHandler.loadPropertyFile(Constants.PROP_SYS);
     }
 
     public static void writeCoibnDataToXML(String file, XmlAppDao pojo, String coinname) {

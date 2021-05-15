@@ -29,7 +29,8 @@ public class MyMarketView implements CmdView{
                 break;
             case 3 :
                 BinanceAPI ba = new BinanceAPI();
-                ba.getUpdatedCoinsStats();
+                //ba.getUpdatedCoinsStats();
+                ba.getUsersPortfolioCoins();
                 status = true;
                 break;
             case 4 :

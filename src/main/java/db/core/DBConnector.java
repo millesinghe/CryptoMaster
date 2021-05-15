@@ -17,7 +17,6 @@ public class DBConnector {
 
     public DBConnector(){
         if (conn == null) {
-            FileHandler.loadProperties();
             this.connect();
         }
     }

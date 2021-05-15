@@ -3,19 +3,18 @@ package vender.core;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import util.Constants;
 import vender.binance.ops.BinanceRequestor;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @author Milinda
  */
 public class HTTPRequestor {
 
-    public String reqToServer(String url, String method, RequestHeader header){
+    public String reqToServer(String url, String httpMethod, RequestHeader header, HashMap<String, String> parameters){
         String jsonData =null;
 
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -24,11 +23,13 @@ public class HTTPRequestor {
         if(header == null){
             request = new Request.Builder()
                     .url(url)
-                    .method(method, null)
+                    .method(httpMethod, null)
                     .addHeader(Constants.CONTENT_TYPE, Constants.APP_JSON)
                     .build();
         }else if (header.getType() == BinanceRequestor.class){
-            request = new BinanceRequestor().requestByAPIKey(url, method,header);
+            BinanceRequestor binaceRequest = new BinanceRequestor();
+            String quartParam = binaceRequest.bindParamWithSign(parameters);
+            request = binaceRequest.requestByAPIKey(url+quartParam, httpMethod,header);
         }
         Response response = null;
         try {

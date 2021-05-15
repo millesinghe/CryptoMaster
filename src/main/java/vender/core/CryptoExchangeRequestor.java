@@ -9,4 +9,5 @@ public interface CryptoExchangeRequestor {
 
     public Request requestByAPIKey(String url, String method, RequestHeader header);
 
+
 }

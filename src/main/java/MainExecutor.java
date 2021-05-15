@@ -1,4 +1,5 @@
 import cmd.IntroView;
+import helper.FileHandler;
 
 /**
  * @author Yasara
@@ -6,6 +7,8 @@ import cmd.IntroView;
 public class MainExecutor {
 
     public static void main(String[] args) {
+
+        FileHandler.loadProperties();
         IntroView intro = new IntroView();
         intro.display();
     }
