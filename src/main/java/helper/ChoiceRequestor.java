@@ -1,4 +1,4 @@
-package operation;
+package helper;
 
 import java.util.Scanner;
 
@@ -63,12 +63,12 @@ public class ChoiceRequestor {
         return anz;
     }
 
-    public static int requestDouble(String question){
-        return ChoiceRequestor.requestInt(question,true);
+    public static double requestDouble(String question){
+        return ChoiceRequestor.requestDouble(question,true);
     }
 
-    public static double requestDouble(String question, boolean answerNextline){
-        double anz = 0.00;
+    public static float requestDouble(String question, boolean answerNextline){
+        float anz = 0.00f;
         do{
             try{
                 Scanner in = new Scanner(System.in);
@@ -77,7 +77,7 @@ public class ChoiceRequestor {
                 else
                     System.out.print(String.valueOf(question));
 
-                anz = in.nextDouble();
+                anz = in.nextFloat();
             }catch (Exception e){
                 System.err.println("INVALID INPUT <please input a valid choice>");
             }

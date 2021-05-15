@@ -1,29 +1,32 @@
-package model.dao.app;
+package model.dao.xml.market;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Milinda
  */
 @JacksonXmlRootElement(localName = "coins")
-public class CoinsDAO implements XmlAppDao {
+public class MarketCoinsDAO {
 
     @JacksonXmlProperty(localName = "coin")
     @JacksonXmlElementWrapper(useWrapping = false)
-    private List<CoinDAO> coin;
+    private List<MarketCoinDAO> coin;
 
-    public CoinsDAO() {
+    public MarketCoinsDAO() {
+        this.coin=new ArrayList<MarketCoinDAO>();
     }
 
-    public List<CoinDAO> getCoin() {
+    public List<MarketCoinDAO> getCoin() {
         return coin;
     }
 
-    public void setCoin(List<CoinDAO> coin) {
+    public void setCoin(List<MarketCoinDAO> coin) {
         this.coin = coin;
     }
+
 }

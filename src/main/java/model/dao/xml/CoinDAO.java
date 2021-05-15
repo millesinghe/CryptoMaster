@@ -1,18 +1,17 @@
-package model.dao.market;
+package model.dao.xml;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import model.dao.app.TransactionDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Milinda
  */
 @JacksonXmlRootElement(localName = "coin")
-public class MarketCoinDAO {
+public class CoinDAO implements XmlAppDao {
 
     @JacksonXmlProperty(isAttribute = true)
     private String name;
@@ -20,11 +19,15 @@ public class MarketCoinDAO {
     @JacksonXmlProperty(isAttribute = true)
     private String id;
 
-    public MarketCoinDAO(){}
+    @JacksonXmlElementWrapper(localName = "transactions")
+    private List<TransactionDAO> tx;
 
-    public MarketCoinDAO(String id, String name){
+    public CoinDAO(){}
+
+    public CoinDAO(String id, String name){
         this.id = id;
         this.name = name;
+        this.tx = new ArrayList<TransactionDAO>();
     }
 
     public String getName() {
@@ -41,5 +44,17 @@ public class MarketCoinDAO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<TransactionDAO> getTx() {
+        return tx;
+    }
+
+    public void setTx(List<TransactionDAO> tx) {
+        this.tx = tx;
+    }
+
+    public void setNewTx(TransactionDAO newtx) {
+        this.tx.add(newtx);
     }
 }

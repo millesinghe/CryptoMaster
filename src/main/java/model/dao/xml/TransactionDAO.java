@@ -1,4 +1,4 @@
-package model.dao.app;
+package model.dao.xml;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 

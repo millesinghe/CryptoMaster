@@ -1,7 +1,7 @@
 package process;
 
-import model.dao.app.CoinDAO;
-import model.dao.app.TransactionDAO;
+import model.dao.db.Coin;
+import model.dao.db.Tx;
 import util.Constants;
 
 import java.util.ArrayList;
@@ -17,27 +17,14 @@ public class BOManager {
         boHelper = new BOHelper();
     }
 
-    public void addNewCoin(boolean isBuy, String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
-        String opsFile = new StringBuilder(Constants.XML_DEAL_RECORDS)
-                .append(coinId)
-                .append(Constants.XML_FILE).toString();
-        CoinDAO coin = this.addCoinRecord(isBuy, opsFile,coinId, name, date, amount, price, fee, equalUSDT);
-        boHelper.updateXML(opsFile,coin, coinId);
+    public void addNewCoinTx(boolean isBuy, String coinId, String name, String date, String amount, String price, String fee){
+        Coin coin = this.addCoinRecord(isBuy, coinId.toUpperCase(), name, date, amount, price, fee);
+        boHelper.insertTxDB(coin);
     }
 
-    private CoinDAO addCoinRecord(boolean isBuy, String opsFile, String coinId, String name, String date, double amount, double price, double fee, double equalUSDT){
-        CoinDAO coin = boHelper.getBuyList(opsFile,coinId);
-        if (coin != null){
-            TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT, isBuy);
-            coin.setNewTx(tx1);
-        }else{
-            TransactionDAO tx1 = new TransactionDAO(date,amount,price,fee,equalUSDT,isBuy);
-            coin = new CoinDAO(coinId,name);
-            ArrayList<TransactionDAO> txs = new ArrayList<TransactionDAO>();
-            txs.add(tx1);
-            coin.setTx(txs);
-        }
-
+    private Coin addCoinRecord(boolean isBuy, String coinId, String name, String date, String amount, String unit, String fee){
+        Tx tx1 = new Tx(date, isBuy, amount, unit,fee);
+        Coin coin = new Coin(coinId,name, null, tx1);
         return coin;
     }
 }

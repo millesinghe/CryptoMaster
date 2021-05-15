@@ -1,6 +1,6 @@
 package cmd;
 
-import operation.ChoiceRequestor;
+import helper.ChoiceRequestor;
 import process.BOHelper;
 import process.BOManager;
 
@@ -49,19 +49,18 @@ public class CoinView implements CmdView{
         }
 
         System.out.println("Coin Name \t\t\t - "+ name);
-        double amount = ChoiceRequestor.requestDouble("Bought Amount * \t - ",false);
-        double price = ChoiceRequestor.requestDouble("Unit Price ("+id+")* \t - ",false);
+        String amount = ChoiceRequestor.requestAnswer("Bought Amount * \t - ",false);
+        String price = ChoiceRequestor.requestAnswer("Unit Price ("+id+")* \t - ",false);
         String date = ChoiceRequestor.requestAnswer("Bought Date * \t\t - ",false);
-        double fee = ChoiceRequestor.requestDouble("Transaction Fee \t - ",false);
-        double equalUSDT = ChoiceRequestor.requestDouble("Unit price ( USDT ) \t - ",false);
+        String fee = ChoiceRequestor.requestAnswer("Transaction Fee \t - ",false);
 
-        new BOManager().addNewCoin(true, id,name,date,amount,price,fee,equalUSDT);
+        new BOManager().addNewCoinTx(true, id,name,date,amount,price,fee);
         return true;
     }
 
     private boolean option2() {
 
-        return false;
+       return false;
     }
 
 }

@@ -1,4 +1,4 @@
-package model.dao.app;
+package model.dao.xml;
 
 /**
  * @author Yasara

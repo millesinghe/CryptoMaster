@@ -1,6 +1,6 @@
 package cmd;
 
-import operation.ChoiceRequestor;
+import helper.ChoiceRequestor;
 
 /**
  * @author Milinda

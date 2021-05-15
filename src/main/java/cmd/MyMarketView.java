@@ -1,11 +1,12 @@
 package cmd;
 
-import model.dao.app.CoinDAO;
-import model.dao.app.CoinsDAO;
-import model.dao.app.TransactionDAO;
-import operation.ChoiceRequestor;
+import model.dao.xml.CoinDAO;
+import model.dao.xml.CoinsDAO;
+import model.dao.xml.TransactionDAO;
+import helper.ChoiceRequestor;
 import process.BOHelper;
 import process.BOManager;
+import vender.binance.ops.BinanceAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class MyMarketView implements CmdView{
 
     public void display() {
-        String[] options = {"Bought new coins","Sold existing coins","TEST", "BACK", "QUIT"};
+        String[] options = {"Bought new coins","Sold existing coins","Sync with Binance", "BACK", "QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a choice on Update Coin Portfolio",options);
         boolean status = false;
         switch (choice) {
@@ -27,10 +28,12 @@ public class MyMarketView implements CmdView{
                 status= this.option2();
                 break;
             case 3 :
-                this.option3();
+                BinanceAPI ba = new BinanceAPI();
+                ba.getUpdatedCoinsStats();
+                status = true;
                 break;
             case 4 :
-                System.out.println("Unimplemented choice");
+                this.option4();
                 break;
             case 5 :
                 status= true;
@@ -58,13 +61,12 @@ public class MyMarketView implements CmdView{
         }
 
         System.out.println("Coin Name \t\t\t - "+ name);
-        double amount = ChoiceRequestor.requestDouble("Bought Amount * \t - ",false);
-        double price = ChoiceRequestor.requestDouble("Unit Price ("+id+")* \t - ",false);
+        String amount = ChoiceRequestor.requestAnswer("Bought Amount * \t - ",false);
+        String price = ChoiceRequestor.requestAnswer("Unit Price ("+id+")* \t - ",false);
         String date = ChoiceRequestor.requestAnswer("Bought Date * \t\t - ",false);
-        double fee = ChoiceRequestor.requestDouble("Transaction Fee \t - ",false);
-        double equalUSDT = ChoiceRequestor.requestDouble("Unit price ( USDT ) \t - ",false);
+        String fee = ChoiceRequestor.requestAnswer("Transaction Fee \t - ",false);
 
-        new BOManager().addNewCoin(true, id,name,date,amount,price,fee,equalUSDT);
+        new BOManager().addNewCoinTx(true, id,name,date,amount,price,fee);
         return true;
     }
 
@@ -79,27 +81,25 @@ public class MyMarketView implements CmdView{
         }
 
         System.out.println("Coin Name \t\t\t - "+ name);
-        double amount = ChoiceRequestor.requestDouble("Sold Amount \t - ",false);
-        double price = ChoiceRequestor.requestDouble("Unit Price ("+id+")\t - ",false);
+        String amount = ChoiceRequestor.requestAnswer("Sold Amount \t - ",false);
+        String price = ChoiceRequestor.requestAnswer("Unit Price ("+id+")\t - ",false);
         String date = ChoiceRequestor.requestAnswer("Sold Date \t\t - ",false);
-        double fee = ChoiceRequestor.requestDouble("Transaction Fee \t - ",false);
-        double equalUSDT = ChoiceRequestor.requestDouble("Unit price ( USDT ) \t - ",false);
+        String fee = ChoiceRequestor.requestAnswer("Transaction Fee \t - ",false);
 
-        new BOManager().addNewCoin(false, id,name,date,amount,price,fee,equalUSDT);
+        new BOManager().addNewCoinTx(false, id,name,date,amount,price,fee);
         return true;
     }
 
 
-    private boolean option3(){
+    private boolean option4(){
         boolean isBuy = true;
         String id = "btc";
         String name = "bitcoin";
         String date = "asdfgh";
-        double amount = 100;
-        double price = 215.1;
-        double fee = 0.1;
-        double equalUSDT =215.1;
-        new BOManager().addNewCoin(isBuy,id,name,date,amount,price,fee,equalUSDT);
+        String amount = "100";
+        String price = "215.1";
+        String fee = "0.1";
+        new BOManager().addNewCoinTx(isBuy,id,name,date,amount,price,fee);
         return true;
     }
 
