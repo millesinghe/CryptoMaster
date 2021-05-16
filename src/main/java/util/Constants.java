@@ -34,4 +34,6 @@ public class Constants {
     public static final String XML_FILE = ".xml";
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String APP_JSON = "application/json";
+    public static final String BINANCE = "Binance";
+    public static final String COINBASE = "Coinbase";
 }

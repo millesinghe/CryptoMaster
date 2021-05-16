@@ -16,16 +16,21 @@ public class Coin {
 
     private String id;
 
-    private String last;
+    private String binPrice;
+
+    private String binAmount;
+
+    private String cbPrice;
+
+    private String cbAmount;
 
     private List<Tx> listTx;
 
     public Coin(){}
 
-    public Coin(String id, String name, String last, Tx tx1){
+    public Coin(String id, String name, Tx tx1){
         this.id = id;
         this.name = name;
-        this.last =last;
         this.listTx = new ArrayList<Tx>();
         this.listTx.add(tx1);
     }
@@ -58,11 +63,35 @@ public class Coin {
         this.listTx.add(newtx);
     }
 
-    public String getLast() {
-        return last;
+    public String getBinPrice() {
+        return binPrice;
     }
 
-    public void setLast(String last) {
-        this.last = last;
+    public void setBinPrice(String binPrice) {
+        this.binPrice = binPrice;
+    }
+
+    public String getBinAmount() {
+        return binAmount;
+    }
+
+    public void setBinAmount(String binAmount) {
+        this.binAmount = binAmount;
+    }
+
+    public String getCbPrice() {
+        return cbPrice;
+    }
+
+    public void setCbPrice(String cbPrice) {
+        this.cbPrice = cbPrice;
+    }
+
+    public String getCbAmount() {
+        return cbAmount;
+    }
+
+    public void setCbAmount(String cbAmount) {
+        this.cbAmount = cbAmount;
     }
 }

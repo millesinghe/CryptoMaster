@@ -16,8 +16,14 @@ import java.util.List;
  */
 public class MyMarketView implements CmdView{
 
+    private String marketName;
+
+    public MyMarketView(String marketName) {
+        this.marketName = marketName;
+    }
+
     public void display() {
-        String[] options = {"Bought new coins","Sold existing coins","Sync with Binance", "BACK", "QUIT"};
+        String[] options = {"Bought new coins","Sold existing coins","Sync with Market", "BACK", "QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a choice on Update Coin Portfolio",options);
         boolean status = false;
         switch (choice) {
@@ -29,8 +35,8 @@ public class MyMarketView implements CmdView{
                 break;
             case 3 :
                 BinanceAPI ba = new BinanceAPI();
-                //ba.getUpdatedCoinsStats();
-                ba.getUsersPortfolioCoins();
+                ba.getUpdatedCoinsStats();
+                //ba.getUsersPortfolioCoins();
                 status = true;
                 break;
             case 4 :

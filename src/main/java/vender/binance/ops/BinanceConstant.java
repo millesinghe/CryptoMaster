@@ -15,7 +15,10 @@ public class BinanceConstant {
     public static final String X_MBX_API = "X-MBX-APIKEY";
     public static final String HMAC_SHA256 = "HmacSHA256";
 
+    public static final String MSG = "msg";
+    public static final String STATUS = "status";
     public static final String TYPE = "type";
     public static final String SPOT = "SPOT";
+
 
 }

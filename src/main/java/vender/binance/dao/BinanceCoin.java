@@ -1,6 +1,11 @@
 package vender.binance.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import model.dao.Param;
+import model.dao.db.Coin;
+import util.Constants;
+
+import java.util.List;
 
 /**
  * @author Milinda
@@ -40,4 +45,5 @@ public class BinanceCoin {
     public void setName(String name) {
         this.name = name;
     }
+
 }

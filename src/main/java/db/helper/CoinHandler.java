@@ -2,12 +2,14 @@ package db.helper;
 
 import db.core.DBManager;
 import model.dao.Param;
+import model.dao.db.BinCoin;
+import model.dao.db.CbCoin;
 import model.dao.db.Coin;
 import model.dao.db.Tx;
 import util.Constants;
 import util.DB_Constants;
+import vender.binance.dao.BinanceCoin;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -31,15 +33,20 @@ public class CoinHandler {
         dbManager = new DBManager();
     }
 
-    public String getCoinName(String coindId) {
+    public Coin getCoin(String coindId) {
         List<Param> paramList = new ArrayList<>();
         paramList.add(new Param(Constants.DATATYPE_STRING,coindId));
-        String res = null;
+        Coin res = null;
         ResultSet rs = null;
         try {
-            rs = dbManager.executeResponseQuery(rs, DB_Constants.GET_COIN_NAMES, paramList);
+            rs = dbManager.executeResponseQuery(rs, DB_Constants.GET_APP_COIN, paramList);
             while (rs.next()) {
-                res = rs.getString(DB_Constants.ATT_COIN_NAME);
+                String id = rs.getString(DB_Constants.ATT_COIN_ID);
+                String name = rs.getString(DB_Constants.ATT_COIN_NAME);
+                String binPrice = rs.getString(DB_Constants.ATT_BIN_PRICE);
+                String binAmount = rs.getString(DB_Constants.ATT_BIN_AMOUNT);
+                res = new BinCoin(id,name,binPrice,binAmount,null);
+
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -50,44 +57,57 @@ public class CoinHandler {
         return res;
     }
 
-    public String getCoinId(String coindId) {
-
-        List<Param> paramList = new ArrayList<>();
-        paramList.add(new Param(Constants.DATATYPE_STRING,coindId));
-        String res = null;
-        ResultSet rs = null;
-        try {
-            rs = dbManager.executeResponseQuery(rs,DB_Constants.GET_COIN_BYID, paramList);
-            while (rs.next()) {
-                 res = rs.getString(DB_Constants.ATT_COIN_NAME);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }finally {
-            dbManager.resultSetClose(rs);
-        }
-        return res;
-    }
-
-    public boolean upsertCoinDB(Coin obj){
-        String coinid = this.getCoinId(obj.getId());
-        if(coinid == null){
-            this.insertCoin(obj);
+    public boolean upsertCoinDB(String coinMarket, Coin upsertCoin){
+        Coin appCoin = this.getCoin(upsertCoin.getId());
+        if(appCoin == null){
+            this.insertCoin(coinMarket,upsertCoin);
         }else{
-
+            this.updateCoin(appCoin, coinMarket, upsertCoin);
         }
         return true;
     }
 
-    private boolean insertCoin(Coin obj) {
+    private boolean updateCoin(Coin appCoin, String coinMarket, Coin upsertCoin) {
+        List<Param> paramList = new ArrayList<>();
+        if(!appCoin.getName().equalsIgnoreCase(upsertCoin.getName())){
+            paramList.add(new Param(Constants.DATATYPE_STRING,upsertCoin.getName()));
+        }else{
+            paramList.add(new Param(Constants.DATATYPE_STRING,appCoin.getName()));
+        }
+        try {
+            if(coinMarket.equals(Constants.BINANCE)){
+                paramList = new BinCoin().bindParamsUpdate(appCoin, upsertCoin, paramList);
+                paramList.add(new Param(Constants.DATATYPE_STRING,upsertCoin.getId()));
+
+                dbManager.executeQuery(DB_Constants.UPDATE_BINANCE_COIN,paramList);
+
+            } else if(coinMarket.equals(Constants.COINBASE)){
+                paramList = new CbCoin().bindParamsUpdate(appCoin, upsertCoin, paramList);
+                paramList.add(new Param(Constants.DATATYPE_STRING,upsertCoin.getId()));
+                return false;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean insertCoin(String coinMarket, Coin obj) {
         List<Param> paramList = new ArrayList<>();
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getId()));
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getName()));
-        paramList.add(new Param(Constants.DATATYPE_STRING,obj.getLast()));
 
         try {
-            dbManager.executeQuery(DB_Constants.INSERT_COIN,paramList);
+            if(coinMarket.equals(Constants.BINANCE)){
+                paramList = new BinCoin().bindParamsInsert(obj, paramList);
+                dbManager.executeQuery(DB_Constants.INSERT_BINANCE_COIN,paramList);
+
+            } else if(coinMarket.equals(Constants.COINBASE)){
+                paramList = new CbCoin().bindParamsInsert(obj, paramList);
+                return false;
+            }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;
@@ -111,50 +131,6 @@ public class CoinHandler {
             return false;
         }
         return true;
-    }
-
-
-    private double getTimeStamp(){
-        Date today = Calendar.getInstance().getTime();
-
-        long epochTime = 0;
-
-        // Constructs a SimpleDateFormat using the given pattern
-        SimpleDateFormat crunchifyFormat = new SimpleDateFormat("MMM dd yyyy HH:mm:ss.SSS zzz");
-
-        // format() formats a Date into a date/time string.
-        String currentTime = crunchifyFormat.format(today);
-        System.out.println("Current Time = " + currentTime);
-
-        try {
-
-            // parse() parses text from the beginning of the given string to produce a date.
-            Date date = crunchifyFormat.parse(currentTime);
-
-            // getTime() returns the number of milliseconds since January 1, 1970, 00:00:00 GMT represented by this Date object.
-            epochTime = date.getTime();
-
-            System.out.println("Current Time in Epoch: " + epochTime);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // Local ZoneID
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        System.out.println("defaultZoneId: " + defaultZoneId);
-
-        Date date = new Date();
-
-        // Default Zone: UTC+0
-        Instant instant = date.toInstant();
-        System.out.println("instant : " + instant);
-
-        // Local TimeZone
-        LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
-        System.out.println("localDateTime : " + localDateTime);
-
-        return epochTime;
     }
 
 }

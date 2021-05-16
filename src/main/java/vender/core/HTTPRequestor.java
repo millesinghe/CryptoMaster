@@ -28,8 +28,11 @@ public class HTTPRequestor {
                     .build();
         }else if (header.getType() == BinanceRequestor.class){
             BinanceRequestor binaceRequest = new BinanceRequestor();
-            String quartParam = binaceRequest.bindParamWithSign(parameters);
-            request = binaceRequest.requestByAPIKey(url+quartParam, httpMethod,header);
+            String quaryParam = "";
+            if(parameters != null){
+                quaryParam = binaceRequest.bindParamWithSign(parameters);
+            }
+            request = binaceRequest.requestByAPIKey(url+quaryParam, httpMethod,header);
         }
         Response response = null;
         try {

@@ -1,6 +1,7 @@
 package cmd;
 
 import helper.ChoiceRequestor;
+import util.Constants;
 
 /**
  * @author Milinda
@@ -24,8 +25,12 @@ public class IntroView implements CmdView{
                 view.display();
                 break;
             case 2 :
-                view = new MyMarketView();
-                view.display();
+                options = new String[]{Constants.BINANCE, Constants.COINBASE};
+                choice = ChoiceRequestor.requestOption(">> Select the Crypto market to proceed",options);
+                if(choice==1){
+                    view = new MyMarketView(Constants.BINANCE);
+                    view.display();
+                }
                 break;
             case 3 :
                 System.out.println("Unimplemented choice");

@@ -19,11 +19,11 @@ public class BOHelper {
     }
 
     public String getCoinName(String id){
-        return coinHandler.getCoinName(id.toUpperCase());
+        return coinHandler.getCoin(id.toUpperCase()).getName();
     }
 
-    public boolean upsertCoinDB(Coin obj){
-        return coinHandler.upsertCoinDB(obj);
+    public boolean upsertCoinDB(String coinMarket, Coin obj){
+        return coinHandler.upsertCoinDB(coinMarket, obj);
     }
 
 

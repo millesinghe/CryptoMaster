@@ -3,7 +3,7 @@ package vender.binance.ops;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helper.FileHandler;
-import model.dao.Param;
+import model.dao.db.BinCoin;
 import model.dao.db.Coin;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,15 +14,18 @@ import vender.binance.dao.WalletCoins;
 import vender.core.HTTPRequestor;
 import vender.core.RequestHeader;
 
-import java.io.FileReader;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 /**
  * @author Milinda
  */
 public class BinanceAPI  {
+
+    public final String SNAPSHOT_VOS = "snapshotVos";
+    public final String BALANCES = "balances";
+    public final String DATA = "data";
+    private final String FiVE = "5";
 
     private Properties propBinance;
 
@@ -40,10 +43,10 @@ public class BinanceAPI  {
                         + propBinance.getProperty(BinanceConstant.ALL_COINS_PRICES)
                 , Constants.GET, headers, null);
         ObjectMapper objectMapper = new ObjectMapper();
-        BinanceCoin[] bcoin = null;
+        BinanceCoin[] bcoins = null;
         try {
-            bcoin = objectMapper.readValue(result, BinanceCoin[].class);
-            if(this.processList(bcoin)){
+            bcoins = objectMapper.readValue(result, BinanceCoin[].class);
+            if(this.processList(bcoins)){
                 System.out.println("Successfully imported coin information");
             }else{
                 System.err.println("Exception occurred while importing the coins information");;
@@ -57,16 +60,15 @@ public class BinanceAPI  {
 
     private boolean processList(BinanceCoin[] bcoins) {
         for (BinanceCoin bcoin:bcoins){
-            if(bcoin.getSymbol().contains(Constants.USDT)){
-                String coinId;
-                String id = bcoin.getSymbol();
+            String id = bcoin.getSymbol();
+            if(id.substring(id.length()-4,id.length()).equalsIgnoreCase(Constants.USDT)){
                 if(id.equalsIgnoreCase(Constants.USDT)){
-                    coinId = Constants.USDT;
+                    id = Constants.USDT;
                 }else{
                     id = id.replace(Constants.USDT,Constants.EMPTY_STR);
                 }
-                Coin coin = new Coin(id, Constants.EMPTY_STR, bcoin.getPrice(), null);
-                boolean isInserted = new BOHelper().upsertCoinDB(coin);
+                Coin coin = new BinCoin(id, Constants.EMPTY_STR, bcoin.getPrice(), "0", null);
+                boolean isInserted = new BOHelper().upsertCoinDB(Constants.BINANCE,coin);
                 if (!isInserted){
                     System.err.println("Excetion while inserting a new Coin");
                     return false;
@@ -85,7 +87,7 @@ public class BinanceAPI  {
 
         HashMap<String,String> parameters = new HashMap<>();
         parameters.put(BinanceConstant.TYPE,BinanceConstant.SPOT);
-        parameters.put(Constants.LIMIT,"5");
+        parameters.put(Constants.LIMIT, FiVE);
 
         String result = new HTTPRequestor().reqToServer(
                 Constants.HTTPS + propBinance.getProperty(BinanceConstant.SERVICE_URL)
@@ -97,11 +99,11 @@ public class BinanceAPI  {
             result = new JSONObject(
                     new JSONObject(
                             new JSONArray(
-                                    resultJSON.get("snapshotVos").toString()
+                                    resultJSON.get(SNAPSHOT_VOS).toString()
                             ).get(4).toString()
-                    ).get("data").toString()).get("balances").toString();
+                    ).get(DATA).toString()).get(BALANCES).toString();
         } catch (Exception e){
-            String errMsg = resultJSON.getString("msg");
+            String errMsg = resultJSON.getString(BinanceConstant.MSG);
             System.err.println("Error - " + errMsg);
             return false;
         }
@@ -135,7 +137,7 @@ public class BinanceAPI  {
                         + propBinance.getProperty(BinanceConstant.CHECK_CONNECTION),
                 Constants.GET, null, null);
         JSONObject jsonStstus = new JSONObject(result);
-        int status = jsonStstus.getInt("status");
+        int status = jsonStstus.getInt(BinanceConstant.STATUS);
         if(status == 0){
             return true;
         }
