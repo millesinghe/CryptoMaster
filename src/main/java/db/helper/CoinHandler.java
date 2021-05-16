@@ -8,18 +8,10 @@ import model.dao.db.Coin;
 import model.dao.db.Tx;
 import util.Constants;
 import util.DB_Constants;
-import vender.binance.dao.BinanceCoin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
