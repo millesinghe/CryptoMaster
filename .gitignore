@@ -1,6 +1,5 @@
 ### Maven ###
 target/
-src/main/resources/vendor/*
 
 ### Eclipse ###
 .metadata
@@ -12,3 +11,4 @@ tmp/
 out/
 .idea/
 CryptoScanner.iml
+/src/main/resources/vendor/
