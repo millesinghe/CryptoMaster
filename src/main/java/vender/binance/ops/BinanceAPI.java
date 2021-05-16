@@ -92,12 +92,19 @@ public class BinanceAPI  {
                         + propBinance.getProperty(BinanceConstant.DAILY_WALLET_SNAPSHOT)+ "?"
                 , Constants.GET, headers, parameters);
         JSONObject resultJSON = new JSONObject(result);
-        result = new JSONObject(
-                new JSONObject(
-                        new JSONArray(
-                                resultJSON.get("snapshotVos").toString()
-                        ).get(4).toString()
-                ).get("data").toString()).get("balances").toString();
+
+        try {
+            result = new JSONObject(
+                    new JSONObject(
+                            new JSONArray(
+                                    resultJSON.get("snapshotVos").toString()
+                            ).get(4).toString()
+                    ).get("data").toString()).get("balances").toString();
+        } catch (Exception e){
+            String errMsg = resultJSON.getString("msg");
+            System.err.println("Error - " + errMsg);
+            return false;
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         WalletCoins[] walletCoins = null;
         try {

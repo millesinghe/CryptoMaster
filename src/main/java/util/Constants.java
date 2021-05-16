@@ -9,8 +9,8 @@ public class Constants {
     public static final String GET = "GET";
     public static final String POST = "POST";
 
-    public static final String API_KEY_BINANCE = "binance.api.key";
-    public static final String API_SECRET_BINANCE = "binance.api.secret";
+    public static final String API_KEY_BINANCE = "api.key";
+    public static final String API_SECRET_BINANCE = "api.secret";
     public static final String BINANCE_PROP_FILE = "binance.property.file";
 
     public static final String PROP_USER = "user.properties";

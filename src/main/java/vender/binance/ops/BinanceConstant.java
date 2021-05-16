@@ -5,6 +5,8 @@ package vender.binance.ops;
  */
 public class BinanceConstant {
 
+    public static final String KEYFILE = "vendor/binance.key" ;
+
     public static final String SERVICE_URL = "service.host.url";
     public static final String ALL_COINS_PRICES = "get.allcoin.prices";
     public static final String CHECK_CONNECTION = "server.connection.status";

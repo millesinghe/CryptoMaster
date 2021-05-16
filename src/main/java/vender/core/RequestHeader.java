@@ -1,11 +1,7 @@
 package vender.core;
 
-import helper.PropertiesLoader;
-import model.dao.VendorKeys;
-import util.Constants;
 import vender.binance.ops.BinanceRequestor;
 
-import java.net.URISyntaxException;
 
 /**
  * @author Milinda

@@ -29,18 +29,10 @@ public class BinanceRequestor implements CryptoExchangeRequestor {
     }
 
     private VendorKeys generateVendorAuth(){
-        String propKey = null;
-        String propSecret = null;
-
-        propKey = Constants.API_KEY_BINANCE;
-        propSecret = Constants.API_SECRET_BINANCE;
-
-        if (propKey == null)
-            return null;
 
         try {
-                String apiKey = new PropertiesLoader().getPropertyFromProp(Constants.PROP_USER,propKey).toString();
-                String apiSecret = new PropertiesLoader().getPropertyFromProp(Constants.PROP_USER,propSecret).toString();
+                String apiKey = new PropertiesLoader().getPropertyFromProp(BinanceConstant.KEYFILE,Constants.API_KEY_BINANCE).toString();
+                String apiSecret = new PropertiesLoader().getPropertyFromProp(BinanceConstant.KEYFILE,Constants.API_SECRET_BINANCE).toString();
                 apiKeys = new VendorKeys(apiKey,apiSecret);
         } catch (URISyntaxException e) {
                 e.printStackTrace();
