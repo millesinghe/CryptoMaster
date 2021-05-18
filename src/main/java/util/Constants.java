@@ -22,6 +22,7 @@ public class Constants {
     public static final String EARN = "EARN";
     public static final String AMOUNT = "AMOUNT";
     public static final String USDT = "USDT";
+    public static final String TETHER = "Tether";
     public static final String LIMIT = "limit";
 
 

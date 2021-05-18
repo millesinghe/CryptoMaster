@@ -19,7 +19,7 @@ public class DB_Constants {
 
     public static final String GET_APP_COIN = "SELECT * FROM coin WHERE coin_id = ?";
     public static final String INSERT_BINANCE_COIN = "INSERT INTO coin (coin_id,coin_name,bin_price,bin_amount) VALUES (?,?,?,?)";
-    public static final String UPDATE_BINANCE_COIN = "UPDATE coin SET coin_name = ?, bin_price = ?,  bin_amount = ? WHERE coin_id = ?";
+    public static final String UPDATE_BINANCE_COIN = "UPDATE coin SET bin_price = ?, coin_amount = ?, bin_amount = ? WHERE coin_id = ?";
 
     public static final String INSERT_TX = "INSERT INTO tx (timestamp, coin_id, is_buy, coin_amount, unit_price, fee) VALUES (?,?,?,?,?,?)";
 

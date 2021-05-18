@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import helper.FileHandler;
 import model.dao.db.BinCoin;
 import model.dao.db.Coin;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import process.BOHelper;
 import util.Constants;
@@ -22,10 +21,9 @@ import java.util.Properties;
  */
 public class BinanceAPI  {
 
-    public final String SNAPSHOT_VOS = "snapshotVos";
-    public final String BALANCES = "balances";
     public final String DATA = "data";
     private final String FiVE = "5";
+    private final String BALANCES = "balances";
 
     private Properties propBinance;
 
@@ -33,7 +31,7 @@ public class BinanceAPI  {
         propBinance = FileHandler.loadPropertyFile(FileHandler.propSys.getProperty(Constants.BINANCE_PROP_FILE));
     }
 
-    public boolean getUpdatedCoinsStats(){
+    public boolean requestUpdatedCoinsStats(){
         if(!checkServiceStatus())
             return false;
 
@@ -46,7 +44,7 @@ public class BinanceAPI  {
         BinanceCoin[] bcoins = null;
         try {
             bcoins = objectMapper.readValue(result, BinanceCoin[].class);
-            if(this.processList(bcoins)){
+            if(this.upsertMarketCoins(bcoins)){
                 System.out.println("Successfully imported coin information");
             }else{
                 System.err.println("Exception occurred while importing the coins information");;
@@ -58,7 +56,7 @@ public class BinanceAPI  {
         return true;
     }
 
-    private boolean processList(BinanceCoin[] bcoins) {
+    private boolean upsertMarketCoins(BinanceCoin[] bcoins) {
         for (BinanceCoin bcoin:bcoins){
             String id = bcoin.getSymbol();
             if(id.substring(id.length()-4,id.length()).equalsIgnoreCase(Constants.USDT)){
@@ -70,7 +68,53 @@ public class BinanceAPI  {
                 Coin coin = new BinCoin(id, Constants.EMPTY_STR, bcoin.getPrice(), "0", null);
                 boolean isInserted = new BOHelper().upsertCoinDB(Constants.BINANCE,coin);
                 if (!isInserted){
-                    System.err.println("Excetion while inserting a new Coin");
+                    System.err.println("Exception while inserting a new Coin");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean requestUsersWalletCoins(){
+        if(!checkServiceStatus())
+            return false;
+
+        RequestHeader headers = new RequestHeader(BinanceRequestor.class);
+
+        HashMap<String,String> parameters = new HashMap<>();
+
+        String result = new HTTPRequestor().reqToServer(
+                Constants.HTTPS + propBinance.getProperty(BinanceConstant.SERVICE_URL)
+                        + propBinance.getProperty(BinanceConstant.LATEST_WALLET_BALANCE)+ "?"
+                , Constants.GET, headers, parameters);
+        JSONObject resultJSON = new JSONObject(result);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        WalletCoins[] walletCoins = null;
+        try {
+            walletCoins = objectMapper.readValue(resultJSON.get(BALANCES).toString(), WalletCoins[].class);
+            if(upsertWalletBalance(walletCoins)){
+                System.out.println("Successfully imported User's Wallet information");
+            }else{
+                System.err.println("Exception occurred while importing the User's Wallet information");;
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean upsertWalletBalance(WalletCoins[] wcoins) {
+        for (WalletCoins wcoin:wcoins){
+            if(Double.parseDouble(wcoin.getFree()) > 0 || Double.parseDouble(wcoin.getLocked()) > 0 ){
+                String id = wcoin.getAsset();
+                System.out.println(id);
+                Coin coin = new BinCoin(id, wcoin.getFree(), wcoin.getLocked());
+                boolean isInserted = new BOHelper().upsertCoinDB(Constants.BINANCE,coin);
+                if (!isInserted){
+                    System.err.println("Exception while inserting a new Coin");
                     return false;
                 }
             }
@@ -79,45 +123,6 @@ public class BinanceAPI  {
 
     }
 
-    public boolean getUsersPortfolioCoins(){
-        if(!checkServiceStatus())
-            return false;
-
-        RequestHeader headers = new RequestHeader(BinanceRequestor.class);
-
-        HashMap<String,String> parameters = new HashMap<>();
-        parameters.put(BinanceConstant.TYPE,BinanceConstant.SPOT);
-        parameters.put(Constants.LIMIT, FiVE);
-
-        String result = new HTTPRequestor().reqToServer(
-                Constants.HTTPS + propBinance.getProperty(BinanceConstant.SERVICE_URL)
-                        + propBinance.getProperty(BinanceConstant.DAILY_WALLET_SNAPSHOT)+ "?"
-                , Constants.GET, headers, parameters);
-        JSONObject resultJSON = new JSONObject(result);
-
-        try {
-            result = new JSONObject(
-                    new JSONObject(
-                            new JSONArray(
-                                    resultJSON.get(SNAPSHOT_VOS).toString()
-                            ).get(4).toString()
-                    ).get(DATA).toString()).get(BALANCES).toString();
-        } catch (Exception e){
-            String errMsg = resultJSON.getString(BinanceConstant.MSG);
-            System.err.println("Error - " + errMsg);
-            return false;
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
-        WalletCoins[] walletCoins = null;
-        try {
-            walletCoins = objectMapper.readValue(result, WalletCoins[].class);
-            System.out.println(walletCoins);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 
     public void orderACoin(String symbol, String side, String type, String timeInForce, String quantity, String price) throws Exception {
         HashMap<String,String> parameters = new HashMap<String,String>();
@@ -143,5 +148,15 @@ public class BinanceAPI  {
         }
         return false;
     }
-    
+
+    public boolean insertDefaultCoins() {
+        // Forcefully adding USDT
+        Coin coin = new BinCoin(Constants.USDT, Constants.TETHER, "1", "0", null);
+        boolean isInserted = new BOHelper().upsertCoinDB(Constants.BINANCE,coin);
+        if (!isInserted){
+            System.err.println("Exception while inserting a new Coin");
+            return false;
+        }
+        return isInserted;
+    }
 }

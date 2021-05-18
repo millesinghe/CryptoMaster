@@ -19,22 +19,18 @@ public class CbCoin extends Coin{
     public CbCoin(String id, String name, String walPrice, String walAmount, Tx tx1){
     }
 
-    @Override
     public String getCbPrice() {
         return cbPrice;
     }
 
-    @Override
     public void setCbPrice(String cbPrice) {
         this.cbPrice = cbPrice;
     }
 
-    @Override
     public String getCbAmount() {
         return cbAmount;
     }
 
-    @Override
     public void setCbAmount(String cbAmount) {
         this.cbAmount = cbAmount;
     }

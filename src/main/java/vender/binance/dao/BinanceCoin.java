@@ -3,6 +3,7 @@ package vender.binance.dao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import model.dao.Param;
 import model.dao.db.Coin;
+import model.dao.db.Tx;
 import util.Constants;
 
 import java.util.List;
@@ -10,16 +11,22 @@ import java.util.List;
 /**
  * @author Milinda
  */
-public class BinanceCoin {
+public class BinanceCoin extends Coin{
 
     private String symbol;
 
     private String price;
 
+    private String amount;
+
     @JsonIgnore
     private String name;
 
     public BinanceCoin() {
+    }
+
+    public BinanceCoin(String id, String name, Tx tx1) {
+        super(id, name,null);
     }
 
     public String getSymbol() {
@@ -46,4 +53,11 @@ public class BinanceCoin {
         this.name = name;
     }
 
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
 }

@@ -61,11 +61,6 @@ public class CoinHandler {
 
     private boolean updateCoin(Coin appCoin, String coinMarket, Coin upsertCoin) {
         List<Param> paramList = new ArrayList<>();
-        if(!appCoin.getName().equalsIgnoreCase(upsertCoin.getName())){
-            paramList.add(new Param(Constants.DATATYPE_STRING,upsertCoin.getName()));
-        }else{
-            paramList.add(new Param(Constants.DATATYPE_STRING,appCoin.getName()));
-        }
         try {
             if(coinMarket.equals(Constants.BINANCE)){
                 paramList = new BinCoin().bindParamsUpdate(appCoin, upsertCoin, paramList);
