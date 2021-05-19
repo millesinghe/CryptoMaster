@@ -1,4 +1,4 @@
-package vender.binance.ops;
+package vender.binance.util;
 
 import helper.PropertiesLoader;
 import model.dao.VendorKeys;

@@ -7,6 +7,7 @@ import helper.ChoiceRequestor;
 import process.BOHelper;
 import process.BOManager;
 import vender.binance.ops.BinanceAPI;
+import vender.binance.ops.BinanceHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,12 @@ public class MyMarketView implements CmdView{
                 status= this.option2();
                 break;
             case 3 :
-                BinanceAPI ba = new BinanceAPI();
+                BinanceHandler ba = new BinanceHandler();
                 ba.insertDefaultCoins();
-                ba.requestUpdatedCoinsStats();
-                ba.requestUsersWalletCoins();
+                ba.getUpdatedCoinsStats();
+                ba.getUsersWalletCoins();
+
+                //ba.requestTransactionHistory();
                 status = true;
                 break;
             case 4 :
@@ -54,8 +57,6 @@ public class MyMarketView implements CmdView{
         } else {
             System.err.println("Operation Failed");
         }
-
-
     }
 
     private boolean option1(){

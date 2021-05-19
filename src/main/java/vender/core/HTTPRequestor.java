@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import util.Constants;
-import vender.binance.ops.BinanceRequestor;
+import vender.binance.util.BinanceRequestor;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package vender.core;
 
-import vender.binance.ops.BinanceRequestor;
+import vender.binance.util.BinanceRequestor;
 
 
 /**

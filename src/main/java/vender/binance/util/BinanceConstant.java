@@ -1,4 +1,4 @@
-package vender.binance.ops;
+package vender.binance.util;
 
 /**
  * @author Milinda
@@ -9,6 +9,7 @@ public class BinanceConstant {
 
     public static final String SERVICE_URL = "service.host.url";
     public static final String ALL_COINS_PRICES = "get.allcoin.prices";
+    public static final String ALL_COIN_TRANSACTION = "get.all.transactions";
     public static final String CHECK_CONNECTION = "server.connection.status";
     public static final String LATEST_WALLET_BALANCE = "latest.wallet.balance";
 
