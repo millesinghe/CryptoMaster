@@ -2,6 +2,7 @@ package cmd;
 
 import helper.ChoiceRequestor;
 import util.Constants;
+import vender.binance.ops.BinanceHandler;
 
 /**
  * @author Milinda
@@ -15,7 +16,7 @@ public class IntroView implements CmdView{
     public void display() {
         this.splashScreen();
 
-        String[] options = {"View My Coins","Update Coin Portfolio","Calculate Profit Margins","SETTING","QUIT"};
+        String[] options = {"View My Coins","Update Coin Portfolio","Calculate Profit Margins","Soft SYNC","QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a option to proceed",options);
         CmdView view = null;
 
@@ -36,7 +37,10 @@ public class IntroView implements CmdView{
                 System.out.println("Unimplemented choice");
                 break;
             case 4 :
-                System.out.println("Unimplemented choice");
+                BinanceHandler bh = new BinanceHandler();
+                bh.insertDefaultCoins();
+                bh.getUpdatedCoinsStats();
+                bh.getUsersWalletCoins();
                 break;
             case 6 :
                 System.exit(1);

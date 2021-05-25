@@ -21,5 +21,7 @@ public class BinanceConstant {
     public static final String TYPE = "type";
     public static final String SPOT = "SPOT";
 
+    public static final String GET_ALL_WALLET_COIN_ID = "SELECT * FROM coin WHERE bin_amount > 0";
+
 
 }

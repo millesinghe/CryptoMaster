@@ -1,9 +1,12 @@
 package process;
 
 import model.dao.db.Coin;
+import model.dao.db.Tx;
 import model.dao.xml.XmlAppDao;
 import db.helper.CoinHandler;
 import helper.FileHandler;
+
+import java.util.List;
 
 /**
  * @author Milinda
@@ -26,9 +29,17 @@ public class BOHelper {
         return coinHandler.upsertCoinDB(coinMarket, obj);
     }
 
+    public boolean upsertTxDB(String coinMarket, Tx obj){
+        return coinHandler.upsertTxDB(coinMarket, obj);
+    }
+
+    public List<Coin> getWalletCoins(String coinMarket){
+        return coinHandler.getWalletCoins(coinMarket);
+    }
+
 
     public boolean insertTxDB(Coin obj){
-        coinHandler.insertTx(obj);
+        //coinHandler.insertTx(obj);
         return true;
     }
 

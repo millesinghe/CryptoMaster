@@ -38,7 +38,6 @@ public class HTTPRequestor {
         try {
             response = client.newCall(request).execute();
             jsonData = response.body().string();
-            System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }

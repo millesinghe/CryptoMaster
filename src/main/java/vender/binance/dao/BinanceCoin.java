@@ -1,12 +1,8 @@
 package vender.binance.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import model.dao.Param;
 import model.dao.db.Coin;
 import model.dao.db.Tx;
-import util.Constants;
-
-import java.util.List;
 
 /**
  * @author Milinda

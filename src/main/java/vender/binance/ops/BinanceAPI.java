@@ -32,11 +32,9 @@ public class BinanceAPI  {
         return result;
     }
 
-    protected String requestUsersWalletCoins(){
+    protected String requestUsersWalletCoins(HashMap<String,String> parameters ){
 
         RequestHeader headers = new RequestHeader(BinanceRequestor.class);
-
-        HashMap<String,String> parameters = new HashMap<>();
 
         String result = new HTTPRequestor().reqToServer(
                 Constants.HTTPS + propBinance.getProperty(BinanceConstant.SERVICE_URL)
@@ -70,11 +68,9 @@ public class BinanceAPI  {
         return false;
     }
 
-    protected String requestTransactionHistory() {
+    protected String requestTransactionHistory(HashMap<String,String> parameters ) {
 
         RequestHeader headers = new RequestHeader(BinanceRequestor.class);
-
-        HashMap<String,String> parameters = new HashMap<>();
 
         String result = new HTTPRequestor().reqToServer(
                 Constants.HTTPS + propBinance.getProperty(BinanceConstant.SERVICE_URL)

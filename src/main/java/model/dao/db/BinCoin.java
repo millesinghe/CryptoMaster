@@ -50,7 +50,7 @@ public class BinCoin extends Coin{
         this.binAmount = binAmount;
     }
 
-    public List<Param> bindParamsInsert(Coin coin, List<Param> paramList) {
+    public List<Param> bindParamsInsertCoin(Coin coin, List<Param> paramList) {
         BinCoin obj = (BinCoin) coin;
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getPrice()));
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getAmount()));

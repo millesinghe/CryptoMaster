@@ -1,8 +1,6 @@
 package model.dao.db;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import model.dao.xml.TransactionDAO;
+import vender.binance.dao.BinanceTx;
 
 import java.util.ArrayList;
 import java.util.List;

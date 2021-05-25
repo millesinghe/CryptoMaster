@@ -1,6 +1,7 @@
 package model.dao.db;
 
 import model.dao.Param;
+import vender.binance.dao.BinanceTx;
 
 import java.util.List;
 

@@ -24,7 +24,7 @@ public class MyMarketView implements CmdView{
     }
 
     public void display() {
-        String[] options = {"Bought new coins","Sold existing coins","Sync with Market", "BACK", "QUIT"};
+        String[] options = {"Bought new coins","Sold existing coins","ADVANCE SYNC with Binance", "BACK", "QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a choice on Update Coin Portfolio",options);
         boolean status = false;
         switch (choice) {
@@ -35,12 +35,8 @@ public class MyMarketView implements CmdView{
                 status= this.option2();
                 break;
             case 3 :
-                BinanceHandler ba = new BinanceHandler();
-                ba.insertDefaultCoins();
-                ba.getUpdatedCoinsStats();
-                ba.getUsersWalletCoins();
-
-                //ba.requestTransactionHistory();
+                BinanceHandler bh = new BinanceHandler();
+                bh.requestTransactionHistory();
                 status = true;
                 break;
             case 4 :
@@ -57,6 +53,7 @@ public class MyMarketView implements CmdView{
         } else {
             System.err.println("Operation Failed");
         }
+
     }
 
     private boolean option1(){

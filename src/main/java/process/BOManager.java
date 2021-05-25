@@ -2,9 +2,6 @@ package process;
 
 import model.dao.db.Coin;
 import model.dao.db.Tx;
-import util.Constants;
-
-import java.util.ArrayList;
 
 /**
  * @author Milinda
@@ -23,7 +20,7 @@ public class BOManager {
     }
 
     private Coin addCoinRecord(boolean isBuy, String coinId, String name, String date, String amount, String unit, String fee){
-        Tx tx1 = new Tx(date, isBuy, amount, unit,fee);
+        Tx tx1 = new Tx();
         Coin coin = new Coin(coinId,name,tx1);
         return coin;
     }

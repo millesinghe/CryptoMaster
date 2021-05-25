@@ -1,59 +1,125 @@
 package model.dao.db;
 
-import model.dao.xml.MetacoinDAO;
+import java.util.List;
 
 /**
  * @author Milinda
  */
 public class Tx {
 
-    private String timestamp;
+    private String id;
+
+    private String orderId;
+
+    private String walletName;
+
     private boolean isBuy;
-    private String coinAmount;
-    private String unitPrice;
+
+    private String buy_coin_type;
+
+    private String buy_amount;
+
+    private String unit_price;
+
+    private String USDTEqual;
+
+    private String spend_coin_type;
+
+    private String spend_amount;
+
     private String fee;
 
-    public Tx(){
+    private String timestamp;
+
+    public Tx() {
     }
 
-    public Tx(String timestamp, boolean is_buy, String coin_amount, String unit_price, String fee) {
-        this.timestamp = timestamp;
-        this.isBuy = is_buy;
-        this.coinAmount = coin_amount;
-        this.unitPrice = unit_price;
+    public Tx(String id, String orderId, String walletName, boolean isBuy, String buy_coin_type, String buy_amount, String unit_price,
+              String USDTEqual, String spend_coin_type, String spend_amount, String fee, String timestamp) {
+        this.id = id;
+        this.orderId = orderId;
+        this.walletName = walletName;
+        this.isBuy = isBuy;
+        this.buy_coin_type = buy_coin_type;
+        this.buy_amount = buy_amount;
+        this.unit_price = unit_price;
+        this.USDTEqual = USDTEqual;
+        this.spend_coin_type = spend_coin_type;
+        this.spend_amount = spend_amount;
         this.fee = fee;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
-    public boolean isBuy() {
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getWalletName() {
+        return walletName;
+    }
+
+    public void setWalletName(String walletName) {
+        this.walletName = walletName;
+    }
+
+    public boolean getIsBuy() {
         return isBuy;
     }
 
-    public void setBuy(boolean buy) {
-        isBuy = buy;
+    public void setIsBuy(boolean isBuy) {
+        this.isBuy = isBuy;
     }
 
-    public String getCoinAmount() {
-        return coinAmount;
+    public String getBuy_coin_type() {
+        return buy_coin_type;
     }
 
-    public void setCoinAmount(String coinAmount) {
-        this.coinAmount = coinAmount;
+    public void setBuy_coin_type(String buy_coin_type) {
+        this.buy_coin_type = buy_coin_type;
     }
 
-    public String getUnitPrice() {
-        return unitPrice;
+    public String getBuy_amount() {
+        return buy_amount;
     }
 
-    public void setUnitPrice(String unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setBuy_amount(String buy_amount) {
+        this.buy_amount = buy_amount;
+    }
+
+    public String getUnit_price() {
+        return unit_price;
+    }
+
+    public void setUnit_price(String unit_price) {
+        this.unit_price = unit_price;
+    }
+
+    public String getUSDTEqual() {
+        return USDTEqual;
+    }
+
+    public void setUSDTEqual(String USDTEqual) {
+        this.USDTEqual = USDTEqual;
+    }
+
+    public String getSpend_coin_type() {
+        return spend_coin_type;
+    }
+
+    public void setSpend_coin_type(String spend_coin_type) {
+        this.spend_coin_type = spend_coin_type;
+    }
+
+    public String getSpend_amount() {
+        return spend_amount;
+    }
+
+    public void setSpend_amount(String spend_amount) {
+        this.spend_amount = spend_amount;
     }
 
     public String getFee() {
@@ -62,5 +128,21 @@ public class Tx {
 
     public void setFee(String fee) {
         this.fee = fee;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }
