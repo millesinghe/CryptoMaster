@@ -35,9 +35,7 @@ public class MyMarketView implements CmdView{
                 status= this.option2();
                 break;
             case 3 :
-                BinanceHandler bh = new BinanceHandler();
-                bh.requestTransactionHistory();
-                status = true;
+
                 break;
             case 4 :
                 this.option4();

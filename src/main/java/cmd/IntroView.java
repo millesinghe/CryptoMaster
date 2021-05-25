@@ -16,15 +16,15 @@ public class IntroView implements CmdView{
     public void display() {
         this.splashScreen();
 
-        String[] options = {"View My Coins","Update Coin Portfolio","Calculate Profit Margins","Soft SYNC","QUIT"};
+        String[] options = {"View My Coins","Update Coin Portfolio","Calculate Profit Margins","Settings","QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a option to proceed",options);
         CmdView view = null;
 
+
         switch (choice) {
             case 1 :
-                view = new CoinView();
-                view.display();
-                break;
+                System.out.println(">> Coin Portfolio - Binance");
+                String reply = ChoiceRequestor.requestAnswer("Go back <Y> ",false);
             case 2 :
                 options = new String[]{Constants.BINANCE, Constants.COINBASE};
                 choice = ChoiceRequestor.requestOption(">> Select the Crypto market to proceed",options);
@@ -37,10 +37,8 @@ public class IntroView implements CmdView{
                 System.out.println("Unimplemented choice");
                 break;
             case 4 :
-                BinanceHandler bh = new BinanceHandler();
-                bh.insertDefaultCoins();
-                bh.getUpdatedCoinsStats();
-                bh.getUsersWalletCoins();
+                view = new SettingView();
+                view.display();
                 break;
             case 6 :
                 System.exit(1);
