@@ -69,9 +69,10 @@ public class CoinHandler {
                 String spend_coin_type = rs.getString(DB_Constants.ATT_spend_coin_type);
                 String spend_amount = rs.getString(DB_Constants.ATT_spend_amount);
                 String fee = rs.getString(DB_Constants.ATT_fee);
+                String fee_coin_type = rs.getString(DB_Constants.ATT_fee_coin_type);
                 String timestamp = rs.getString(DB_Constants.ATT_timestamp);
                 res = new Tx(id, orderId, walletName, isBuy, buy_coin_type, buy_amount, unit_price,
-                        USDTEqual, spend_coin_type, spend_amount, fee, timestamp);
+                        USDTEqual, spend_coin_type, spend_amount, fee,fee_coin_type, timestamp);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -111,6 +112,7 @@ public class CoinHandler {
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getSpend_coin_type()));
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getSpend_amount()));
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getFee()));
+        paramList.add(new Param(Constants.DATATYPE_STRING,obj.getFee_coin_type()));
         paramList.add(new Param(Constants.DATATYPE_STRING,obj.getTimestamp()));
 
         try {

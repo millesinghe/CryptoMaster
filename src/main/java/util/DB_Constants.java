@@ -21,7 +21,7 @@ public class DB_Constants {
     public static final String UPDATE_BINANCE_COIN = "UPDATE coin SET bin_price = ?, coin_amount = ?, bin_amount = ? WHERE coin_id = ?";
 
     public static final String GET_TX = "SELECT * FROM tx WHERE id = ?";
-    public static final String INSERT_TX = "INSERT INTO tx (id, orderId, walletName, isBuy, buy_coin_type, buy_amount, unit_price, USDTEqual, spend_coin_type, spend_amount, fee,timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_TX = "INSERT INTO tx (id, orderId, walletName, isBuy, buy_coin_type, buy_amount, unit_price, USDTEqual, spend_coin_type, spend_amount, fee, fee_coin_type,timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     public static final String ATT_id = "id";
     public static final String ATT_orderId = "orderId";
@@ -34,6 +34,9 @@ public class DB_Constants {
     public static final String ATT_spend_coin_type = "spend_coin_type";
     public static final String ATT_spend_amount = "spend_amount";
     public static final String ATT_fee = "fee";
+    public static final String ATT_fee_coin_type = "fee_coin_type";
     public static final String ATT_timestamp = "timestamp";
+
+    public static final String FILTER_GROUP_COINS = "SELECT * FROM tx WHERE id = ?";
 
 }

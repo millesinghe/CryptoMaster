@@ -172,10 +172,10 @@ public class BinanceHandler {
                 }
                 String uSDTEqual = null;
                 if(dealCurrency.equals(Constants.USDT)){
-                    uSDTEqual = tx.getPrice();
+                    uSDTEqual = tx.getQuoteQty();
                 }
                 Tx binTx = new Tx(tx.getId(), tx.getOrderId(),Constants.BINANCE,tx.isIsBuyer(),txName,tx.getQty(),tx.getPrice(),
-                        uSDTEqual, Constants.USDT,tx.getQuoteQty(),tx.getCommission(),tx.getTime());
+                        uSDTEqual, Constants.USDT,tx.getQuoteQty(),tx.getCommission(), tx.getCommissionAsset(),tx.getTime());
                 boolean isInserted = new BOHelper().upsertTxDB(Constants.BINANCE, binTx);
                 if (!isInserted) {
                     System.err.println("Exception while inserting a new Transaction");

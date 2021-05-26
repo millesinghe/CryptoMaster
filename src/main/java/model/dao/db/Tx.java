@@ -27,6 +27,8 @@ public class Tx {
 
     private String spend_amount;
 
+    private String fee_coin_type;
+
     private String fee;
 
     private String timestamp;
@@ -35,7 +37,7 @@ public class Tx {
     }
 
     public Tx(String id, String orderId, String walletName, boolean isBuy, String buy_coin_type, String buy_amount, String unit_price,
-              String USDTEqual, String spend_coin_type, String spend_amount, String fee, String timestamp) {
+              String USDTEqual, String spend_coin_type, String spend_amount, String fee, String fee_coin_type,String timestamp) {
         this.id = id;
         this.orderId = orderId;
         this.walletName = walletName;
@@ -47,6 +49,7 @@ public class Tx {
         this.spend_coin_type = spend_coin_type;
         this.spend_amount = spend_amount;
         this.fee = fee;
+        this.fee_coin_type =  fee_coin_type;
         this.timestamp = timestamp;
     }
 
@@ -144,5 +147,21 @@ public class Tx {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isBuy() {
+        return isBuy;
+    }
+
+    public void setBuy(boolean buy) {
+        isBuy = buy;
+    }
+
+    public String getFee_coin_type() {
+        return fee_coin_type;
+    }
+
+    public void setFee_coin_type(String fee_coin_type) {
+        this.fee_coin_type = fee_coin_type;
     }
 }
