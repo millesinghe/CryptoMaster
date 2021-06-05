@@ -37,6 +37,34 @@ public class DB_Constants {
     public static final String ATT_fee_coin_type = "fee_coin_type";
     public static final String ATT_timestamp = "timestamp";
 
-    public static final String FILTER_GROUP_COINS = "SELECT * FROM tx WHERE id = ?";
+    public static final String ATT_COIN = "coin";
+    public static final String ATT_TOT_ASSETS = "total_assets";
+    public static final String ATT_TOT_COST = "total_cost";
+    public static final String ATT_UNIT_COST = "unit_cost";
+    public static final String ATT_MARKET_PRICES = "market_price";
+    public static final String ATT_UNIT_PROFIT = "unit_profit";
+    public static final String ATT_TOT_PROFIT = "total_profit";
+    public static final String ATT_TOT_GAIN = "profit_gain";
+    public static final String ATT_CUR_VALUE = "current_value";
+
+    public static final String GET_COIN_PROFIT = "SELECT * FROM view_buy_coin_stats";
+    public static final String GET_COIN_PROFIT_BY_DATE = "SELECT buy_coin_type AS 'coin', SUM(buy_amount) AS " +
+            "'total_assets', SUM(spend_amount) AS 'total_cost', SUM(spend_amount)/SUM(buy_amount) AS 'unit_cost', " +
+            "bin_price AS 'market_price',(coin.bin_price - SUM(spend_amount)/SUM(buy_amount)) AS 'unit_profit'," +
+            "(coin.bin_price - SUM(spend_amount)/SUM(buy_amount))*SUM(buy_amount) AS 'total_profit', " +
+            "(coin.bin_price * SUM(buy_amount)) AS 'current_value'," +
+            "coin.bin_price-SUM(spend_amount)/SUM(buy_amount))/coin.bin_price*100  AS 'profit_gain'" +
+            "FROM tx INNER JOIN coin" +
+            " on coin.coin_id = tx.buy_coin_type WHERE tx.isBuy = ? AND tx.timestamp > ? GROUP BY tx.buy_coin_type";
+
+    public static final String GET_COIN_SELL_PROFIT = "SELECT * FROM view_sell_coin_stats";
+
+    public static final String FILTER_COIN_STATS = "SELECT buy_coin_type AS 'coin', SUM(buy_amount) AS 'total_assets', " +
+                                "SUM(spend_amount) AS 'total_cost', SUM(spend_amount)/SUM(buy_amount) AS 'unit_cost', " +
+                                "bin_price AS 'market_price', " +
+                                "(coin.bin_price - SUM(spend_amount)/SUM(buy_amount)) AS 'unit_profit', " +
+                                "(coin.bin_price - SUM(spend_amount)/SUM(buy_amount))*SUM(buy_amount)  AS 'total_profit' " +
+                                "FROM tx INNER JOIN coin on coin.coin_id = tx.buy_coin_type WHERE tx.isBuy = ? " +
+                                "AND ? < tx.timestamp AND tx.timestamp < ? GROUP BY tx.buy_coin_type";
 
 }

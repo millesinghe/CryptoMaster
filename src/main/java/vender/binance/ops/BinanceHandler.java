@@ -1,17 +1,22 @@
 package vender.binance.ops;
 
+import cmd.WalletView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import model.dao.ProfitDAO;
 import model.dao.db.BinCoin;
 import model.dao.db.Coin;
 import model.dao.db.Tx;
 import org.json.JSONObject;
 import process.BOHelper;
 import util.Constants;
+import util.DB_Constants;
 import vender.binance.dao.BinanceCoin;
 import vender.binance.dao.BinanceTx;
 import vender.binance.dao.WalletCoins;
+import vender.binance.util.BinanceConstant;
 import vender.binance.util.BinanceRequestor;
+import vender.core.HTTPRequestor;
 import vender.core.RequestHeader;
 
 import java.util.HashMap;
@@ -73,6 +78,17 @@ public class BinanceHandler {
         }
         return true;
     }
+
+    public boolean getWalletProfit(boolean isBuy, String fromDate) {
+
+        List<ProfitDAO> result = new BOHelper().getWalletProfit(isBuy, fromDate);
+        WalletView w = new WalletView(result, isBuy);
+        w.display();
+
+        return true;
+    }
+
+
 
     public boolean getUsersWalletCoins() {
         if (!api.checkServiceStatus())

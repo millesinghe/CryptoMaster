@@ -24,7 +24,7 @@ public class MyMarketView implements CmdView{
     }
 
     public void display() {
-        String[] options = {"Bought new coins","Sold existing coins","ADVANCE SYNC with Binance", "BACK", "QUIT"};
+        String[] options = {"Manually Update - Bought new coins","Manually Update - Sold existing coins","No Option", "BACK", "QUIT"};
         int choice = ChoiceRequestor.requestOption(">> Select a choice on Update Coin Portfolio",options);
         boolean status = false;
         switch (choice) {

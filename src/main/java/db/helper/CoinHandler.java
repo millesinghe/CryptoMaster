@@ -2,6 +2,7 @@ package db.helper;
 
 import db.core.DBManager;
 import model.dao.Param;
+import model.dao.ProfitDAO;
 import model.dao.db.BinCoin;
 import model.dao.db.CbCoin;
 import model.dao.db.Coin;
@@ -24,6 +25,58 @@ public class CoinHandler {
 
     public CoinHandler(){
         dbManager = new DBManager();
+    }
+
+    public List<ProfitDAO> getWalletProfit(boolean isBuy, String fromDate){
+        List<ProfitDAO> res = new ArrayList<ProfitDAO>();
+        ResultSet rs = null;
+
+        //paramList.add(new Param(Constants.DATATYPE_BOOLEAN,isBuy));
+        try {
+            if (fromDate == null){
+                res = this.getProfitStats(isBuy,rs, res);
+            }else {
+
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return res;
+    }
+
+    private List<ProfitDAO> getProfitStats(boolean isBuy, ResultSet rs, List<ProfitDAO> res) throws SQLException {
+        List<Param> paramList = new ArrayList<>();
+        if (isBuy) {
+            rs = dbManager.executeResponseQuery(rs, DB_Constants.GET_COIN_PROFIT,paramList);
+            while (rs.next()) {
+                String coinName = rs.getString(DB_Constants.ATT_COIN);
+                String totAssets = rs.getString(DB_Constants.ATT_TOT_ASSETS);
+                String totCost = rs.getString(DB_Constants.ATT_TOT_COST);
+                String unitCost = rs.getString(DB_Constants.ATT_UNIT_COST);
+                String marketPrice = rs.getString(DB_Constants.ATT_MARKET_PRICES);
+                String unitProfit = rs.getString(DB_Constants.ATT_UNIT_PROFIT);
+                String totProfit = rs.getString(DB_Constants.ATT_TOT_PROFIT);
+                String gain = rs.getString(DB_Constants.ATT_TOT_GAIN);
+                String currValue = rs.getString(DB_Constants.ATT_CUR_VALUE);
+                res.add(new ProfitDAO(coinName, totAssets, totCost, unitCost, marketPrice, currValue, unitProfit, totProfit, gain));
+            }
+        } else {
+            rs = dbManager.executeResponseQuery(rs, DB_Constants.GET_COIN_SELL_PROFIT, paramList);
+            while (rs.next()) {
+                String coinName = rs.getString(DB_Constants.ATT_COIN);
+                String totAssets = rs.getString(DB_Constants.ATT_TOT_ASSETS);
+                String totCost = rs.getString(DB_Constants.ATT_TOT_COST);
+                String unitCost = rs.getString(DB_Constants.ATT_UNIT_COST);
+                String marketPrice = rs.getString(DB_Constants.ATT_MARKET_PRICES);
+                String unitProfit = rs.getString(DB_Constants.ATT_UNIT_PROFIT);
+                String totProfit = rs.getString(DB_Constants.ATT_TOT_PROFIT);
+                String gain = rs.getString(DB_Constants.ATT_TOT_GAIN);
+                String currValue = rs.getString(DB_Constants.ATT_CUR_VALUE);
+                res.add(new ProfitDAO(coinName, totAssets, totCost, unitCost, marketPrice, currValue, unitProfit, totProfit, gain));
+            }
+        }
+        return res;
     }
 
     public Coin getCoin(String coindId) {
